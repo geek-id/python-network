@@ -8,17 +8,12 @@ import fileinput
 
 DN = open(os.devnull, 'w')
 
-# package = raw_input('Search Package : ')
-# package = ['apache2', 'php', 'php-gd', 'php-mysql', 'phpmyadmin', 'mysql-server', 'mysql-client']
 openssh = b'^openssh-server'
-# pkg = " ".join('%s' % pkg for pkg in package)
-# print pkg
 
 def search(pkg):
 	proc = Popen(['apt-cache', 'search', pkg],stdout=PIPE, stderr=DN)
 
 	listPkg = proc.communicate()[0].split(b'\n')
-	# print(listPkg)
 
 	for package in listPkg:
 		if len(package) == 0:
@@ -27,15 +22,10 @@ def search(pkg):
 			global getPackage
 			getPackage = package[:package.find(b' ')]
 			if re.match(pkg, getPackage, re.IGNORECASE):
-				# package = getPackage
 				print('Package %s available to install...' % (getPackage.decode("utf-8")))
-				# install(pkg)
 			else:
 				print('Package %s not available, please add another repository package...' % (getPackage))
-	# search_line = proc.stdout.readlines()
-	# for line in search_line:
-		# print line.find('openssh')
-		# sleep(1)
+
 	return getPackage
 
 def configSSH():
